@@ -5,17 +5,19 @@ import { UserWarning } from './UserWarning';
 import { USER_ID, getTodos } from './api/todos';
 import { Todo } from './types/Todo';
 import { addTodo, deleteTodo } from './api/todos';
+import { FilterType } from './types/FilterType';
+import { ErrorType } from './types/ErrorType';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [errorMessage, setErrorMessage] = useState<ErrorType>('');
+  const [filter, setFilter] = useState<FilterType>('all');
 
   const [newTodoTitle, setNewTodoTitle] = useState<string>('');
   const [todoIdsInProgress, setTodoIdsInProgress] = useState<number[]>([]);
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
-  const showError = (message: string) => {
+  const showError = (message: ErrorType) => {
     setErrorMessage(message);
 
     setTimeout(() => {
@@ -106,7 +108,7 @@ export const App: React.FC = () => {
           {/* this button should have `active` class only if all todos are completed */}
           <button
             type="button"
-            className={`todoapp__toggle-all ${todos.length > 0 && todos.every(todo => todo.completed) ? 'active' : ''}`}
+            className={`todoapp__toggle-all ${!!todos.length && todos.every(todo => todo.completed) ? 'active' : ''}`}
             data-cy="ToggleAllButton"
           />
 
